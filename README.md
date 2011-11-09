@@ -1,3 +1,3 @@
-= Bang
+# Bang
 
 To be documented.

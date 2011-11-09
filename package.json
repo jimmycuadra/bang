@@ -8,12 +8,17 @@
     "type": "git",
     "url": "git://github.com/jimmycuadra/bang.git"
   },
+  "bin": {
+    "bang": "./bin/bang"
+  },
   "scripts": {
     "test": "cake spec"
   },
   "engines": {
     "node": "~0.6.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "commander": "~0.3.2"
+  },
   "devDependencies": {}
 }
