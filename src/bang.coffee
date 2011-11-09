@@ -1,10 +1,27 @@
 program = require "commander"
+fs      = require "fs"
+path    = require "path"
 
-get = ->
+bang = process.env.HOME + "/.bang"
+data = {}
 
-set = ->
+if path.existsSync bang
+  data = JSON.parse(fs.readFileSync bang)
+
+save = ->
+  console.log "save called"
+  fs.writeFileSync bang, JSON.stringify(data)
+
+get = (key) ->
+  console.log data[key] if data[key]
+
+set = (key, value) ->
+  data[key] = value
+  save()
 
 remove = ->
+  delete data[key] if data[key]
+  save()
 
 exports.start = ->
   program.version("0.0.1")
