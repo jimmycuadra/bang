@@ -1,0 +1,19 @@
+{
+  "author": "Jimmy Cuadra <jimmy@jimmycuadra.com> (http://jimmycuadra.com/)",
+  "name": "bang",
+  "description": "Text snippets on the command line.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jimmycuadra/bang",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jimmycuadra/bang.git"
+  },
+  "scripts": {
+    "test": "cake spec"
+  },
+  "engines": {
+    "node": "~0.6.0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
