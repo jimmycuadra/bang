@@ -20,5 +20,8 @@
   "dependencies": {
     "commander": "~0.3.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jasmine-node": "~1.0.12",
+    "nodewatch": "~0.0.4"
+  }
 }
