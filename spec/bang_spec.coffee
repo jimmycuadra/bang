@@ -2,43 +2,42 @@ Bang = require "bang"
 
 describe "Bang", ->
   beforeEach ->
+    spyOn(Bang.prototype, "getData").andReturn {}
+    spyOn(Bang.prototype, "save")
+    spyOn(Bang.prototype, "log")
+
     @bang = new Bang
-    spyOn(@bang, "getData").andReturn {}
-    spyOn(@bang, "save")
-    spyOn(@bang, "log")
 
-  it "sets keys when called with a key and a value", ->
-    @bang.start ["node", "bang.js", "paul", "rooster"]
-    expect(@bang.data.paul).toEqual "rooster"
+  describe "#set", ->
+    beforeEach ->
+      @bang.set("paul", "rooster")
 
-  it "gets keys when called with only a key", ->
-    @bang.data.mathilda = "cow"
-    value = @bang.start ["node", "bang.js", "mathilda"]
-    expect(@bang.log).toHaveBeenCalledWith "cow"
+    it "stores the given value", ->
+      expect(@bang.data.paul).toEqual "rooster"
 
-  it "removes keys when called with -d and a key", ->
-    @bang.data.theGreatLeon = "lion"
-    @bang.start ["node", "bang.js", "-d", "theGreatLeon"]
-    expect(@bang.data.theGreatLeon).not.toBeDefined()
+    it "saves the data", ->
+      expect(@bang.save).toHaveBeenCalled()
 
-  it "saves data when a key is set or removed", ->
-    @bang.set "barney", "sabertooth tiger"
-    @bang.remove "barney"
-    expect(@bang.save.callCount).toBe 2
+  describe "#get", ->
+    it "logs the value of the key", ->
+      @bang.data.mathilda = "cow"
+      @bang.get("mathilda")
+      expect(@bang.log).toHaveBeenCalledWith "cow"
 
-  it "lists keys when called with no arguments and there is data", ->
-    @bang.data.foo = "bar"
-    spyOn(@bang, "list")
-    @bang.start ["node", "bang.js"]
-    expect(@bang.list).toHaveBeenCalled()
+  describe "#remove", ->
+    beforeEach ->
+      @bang.data["the great leon"] = "lion"
+      @bang.remove("the great leon")
 
-  it "outputs help when called with no arguments are there is no data", ->
-    @bang.start ["node", "bang.js"]
-    console.log @bang.data
-    expect(@bang.log.mostRecentCall.args).toMatch /Usage/
+    it "removes the key", ->
+      expect(@bang.data["the great leon"]).not.toBeDefined()
 
-  it "aligns keys in list output by padding their left edges with spaces", ->
-    @bang.data.foo = "bar"
-    @bang.data.blah = "bleh"
-    @bang.list()
-    expect(@bang.log.argsForCall[0][0]).toEqual " foo: bar"
+    it "saves the data", ->
+      expect(@bang.save).toHaveBeenCalled()
+
+  describe "#list", ->
+    it "logs an aligned list of keys and values", ->
+      @bang.data.paul = "mathilda"
+      @bang.data["the great leon"] = "barney"
+      @bang.list()
+      expect(@bang.log.argsForCall[0][0]).toEqual "          paul: mathilda"
