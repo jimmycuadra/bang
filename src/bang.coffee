@@ -6,7 +6,7 @@ module.exports = class Bang
   constructor: ->
     @data = @getData()
 
-  start: (args = process.argv) ->
+  start: (args) ->
     program.version("0.0.1")
             .usage("[options] [key] [value]")
             .option("-d, --delete", "delete the specified key")
