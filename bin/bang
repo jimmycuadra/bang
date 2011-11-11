@@ -5,4 +5,4 @@ var path  = require('path'),
     Bang  = require(path.join(path.dirname(fs.realpathSync(__filename)), '../lib/bang')),
     prog  = new Bang;
 
-prog.start();
+prog.start(process.argv.slice(0, 2));

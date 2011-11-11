@@ -2,11 +2,7 @@ program = require "commander"
 fs      = require "fs"
 path    = require "path"
 
-bang = process.env.HOME + "/.bang"
-data = {}
-
-
-exports = class Bang
+module.exports = class Bang
   constructor: ->
     @data = @getData()
 
@@ -19,13 +15,13 @@ exports = class Bang
     [key, value] = program.args
 
     if key and program.delete
-      remove key
+      @remove key
     else if key and value
-      set key, value
+      @set key, value
     else if key
-      get key
+      @get key
     else
-      console.log program.helpInformation()
+      @log program.helpInformation()
 
   dataPath: process.env.HOME + "/.bang"
 
@@ -37,16 +33,19 @@ exports = class Bang
     else
       {}
 
+  log: (args...) ->
+    console.log args...
+
   save: ->
     fs.writeFileSync @dataPath, JSON.stringify(@data)
 
   get: (key) ->
-    console.log @data[key] if @data[key]
+    @log @data[key] if @data[key]
 
   set: (key, value) ->
-    @data[key] = @data[value]
-    save()
+    @data[key] = value
+    @save()
 
   remove: (key) ->
     delete @data[key]
-    save()
+    @save()
