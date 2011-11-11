@@ -21,7 +21,10 @@ module.exports = class Bang
     else if key
       @get key
     else
-      @log program.helpInformation()
+      if Object.keys(@data).length is 0
+        @log program.helpInformation()
+      else
+        @list()
 
   dataPath: process.env.HOME + "/.bang"
 
@@ -49,3 +52,22 @@ module.exports = class Bang
   remove: (key) ->
     delete @data[key]
     @save()
+
+  list: ->
+    amount = 0
+
+    for key of @data
+      amount = key.length if key.length > amount
+
+    for key of @data
+      @log "#{@pad(key, amount)}#{key}: #{@data[key]}"
+
+  pad: (item, amount) ->
+    out = ""
+    i = amount - item.length
+
+    while i > 0
+      out += " "
+      i--
+
+    out
