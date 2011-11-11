@@ -1,4 +1,4 @@
-program = require "commander"
+{Command} = require "commander"
 fs      = require "fs"
 path    = require "path"
 
@@ -7,6 +7,8 @@ module.exports = class Bang
     @data = @getData()
 
   start: (args) ->
+    program = new Command
+
     program.version("0.0.1")
             .usage("[options] [key] [value]")
             .option("-d, --delete", "delete the specified key")
