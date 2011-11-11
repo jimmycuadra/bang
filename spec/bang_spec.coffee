@@ -1,5 +1,8 @@
 Bang = require "bang"
 
+cliArgs = (args) ->
+  ["node", "bang.js"].concat args
+
 describe "Bang", ->
   beforeEach ->
     spyOn(Bang.prototype, "getData").andReturn {}
@@ -24,12 +27,12 @@ describe "Bang", ->
       @bang.get("mathilda")
       expect(@bang.log).toHaveBeenCalledWith "cow"
 
-  describe "#remove", ->
+  describe "#delete", ->
     beforeEach ->
       @bang.data["the great leon"] = "lion"
-      @bang.remove("the great leon")
+      @bang.delete("the great leon")
 
-    it "removes the key", ->
+    it "deletes the key", ->
       expect(@bang.data["the great leon"]).not.toBeDefined()
 
     it "saves the data", ->
@@ -41,3 +44,35 @@ describe "Bang", ->
       @bang.data["the great leon"] = "barney"
       @bang.list()
       expect(@bang.log.argsForCall[0][0]).toEqual "          paul: mathilda"
+
+  describe "#start", ->
+    describe "when called with no arguments", ->
+      describe "when there is no data", ->
+        it "displays the help information", ->
+          @bang.start cliArgs([])
+          expect(@bang.log.mostRecentCall.args).toMatch /Usage/
+
+      describe "when there is data", ->
+        it "delegates to #list", ->
+          spyOn(@bang, "list")
+          @bang.data.foo = "bar"
+          @bang.start cliArgs([])
+          expect(@bang.list).toHaveBeenCalled()
+
+    describe "when called with a key", ->
+      describe "and the -d option", ->
+        it "delegates to delete", ->
+          spyOn(@bang, "delete")
+          @bang.start cliArgs(["-d", "foo"])
+          expect(@bang.delete).toHaveBeenCalled()
+
+      it "delegates to get", ->
+        spyOn(@bang, "get")
+        @bang.start cliArgs(["foo"])
+        expect(@bang.get).toHaveBeenCalled()
+
+    describe "when called with a key and value", ->
+      it "delegates to set", ->
+        spyOn(@bang, "set")
+        @bang.start cliArgs(["foo", "bar"])
+        expect(@bang.set).toHaveBeenCalled()

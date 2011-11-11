@@ -15,7 +15,7 @@ module.exports = class Bang
     [key, value] = program.args
 
     if key and program.delete
-      @remove key
+      @delete key
     else if key and value
       @set key, value
     else if key
@@ -49,7 +49,7 @@ module.exports = class Bang
     @data[key] = value
     @save()
 
-  remove: (key) ->
+  delete: (key) ->
     delete @data[key]
     @save()
 
