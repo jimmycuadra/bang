@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-var path      = require('path'),
-    fs        = require('fs'),
-    bangPath  = path.join(path.dirname(fs.realpathSync(__filename)), '../lib/bang');
+var path  = require('path'),
+    fs    = require('fs'),
+    Bang  = require(path.join(path.dirname(fs.realpathSync(__filename)), '../lib/bang')),
+    prog  = new Bang;
 
-require(bangPath).start();
+prog.start();

@@ -5,36 +5,48 @@ path    = require "path"
 bang = process.env.HOME + "/.bang"
 data = {}
 
-if path.existsSync bang
-  data = JSON.parse(fs.readFileSync bang)
 
-save = ->
-  fs.writeFileSync bang, JSON.stringify(data)
+exports = class Bang
+  constructor: ->
+    @data = @getData()
 
-get = (key) ->
-  console.log data[key] if data[key]
+  start: (args = process.argv) ->
+    program.version("0.0.1")
+            .usage("[options] [key] [value]")
+            .option("-d, --delete", "delete the specified key")
+            .parse(args)
 
-set = (key, value) ->
-  data[key] = value
-  save()
+    [key, value] = program.args
 
-remove = ->
-  delete data[key] if data[key]
-  save()
+    if key and program.delete
+      remove key
+    else if key and value
+      set key, value
+    else if key
+      get key
+    else
+      console.log program.helpInformation()
 
-exports.start = ->
-  program.version("0.0.1")
-          .usage("[options] [key] [value]")
-          .option("-d, --delete", "delete the specified key")
-          .parse(process.argv)
+  dataPath: process.env.HOME + "/.bang"
 
-  [key, value] = program.args
+  getData: ->
+    return @data if @data
 
-  if key and program.delete
-    remove key
-  else if key and value
-    set key, value
-  else if key
-    get key
-  else
-    console.log program.helpInformation()
+    if path.existsSync @dataPath
+      JSON.parse(fs.readFileSync @dataPath)
+    else
+      {}
+
+  save: ->
+    fs.writeFileSync @dataPath, JSON.stringify(@data)
+
+  get: (key) ->
+    console.log @data[key] if @data[key]
+
+  set: (key, value) ->
+    @data[key] = @data[value]
+    save()
+
+  remove: (key) ->
+    delete @data[key]
+    save()
