@@ -9,7 +9,6 @@ if path.existsSync bang
   data = JSON.parse(fs.readFileSync bang)
 
 save = ->
-  console.log "save called"
   fs.writeFileSync bang, JSON.stringify(data)
 
 get = (key) ->
