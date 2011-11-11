@@ -35,6 +35,7 @@ dateString = ->
   s = d.getSeconds()
   meridiem = if h >= 12 then "PM" else "AM"
   h -= 12 if h > 12
+  h = 12 if h is 0
   m = "0" + m if m < 10
   s = "0" + s if s < 10
 
