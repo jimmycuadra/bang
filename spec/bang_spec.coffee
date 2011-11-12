@@ -22,6 +22,12 @@ describe "Bang", ->
       expect(@bang.save).toHaveBeenCalled()
 
   describe "#get", ->
+    it "copies the value of the key to the clipboard", ->
+      @bang.data.mathilda = "cow"
+      spyOn(@bang, "copy")
+      @bang.get("mathilda")
+      expect(@bang.copy).toHaveBeenCalledWith "cow"
+
     it "logs the value of the key", ->
       @bang.data.mathilda = "cow"
       @bang.get("mathilda")

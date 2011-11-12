@@ -1,6 +1,8 @@
 {Command} = require "commander"
 fs      = require "fs"
 path    = require "path"
+{exec}  = require "child_process"
+os      = require "os"
 
 module.exports = class Bang
   constructor: ->
@@ -45,7 +47,10 @@ module.exports = class Bang
     fs.writeFileSync @dataPath, JSON.stringify(@data)
 
   get: (key) ->
-    @log @data[key] if @data[key]
+    value = @data[key]
+    return unless value
+    @copy value
+    @log value
 
   set: (key, value) ->
     @data[key] = value
@@ -63,6 +68,11 @@ module.exports = class Bang
 
     for key of @data
       @log "#{@pad(key, amount)}#{key}: #{@data[key]}"
+
+  copy: (value) ->
+    copyCommand = if os.type().match /darwin/i then "pbcopy" else "xclip -selection clipboard"
+    exec "printf #{value} | #{copyCommand}", (error, stdout, stderr) ->
+      throw error if error
 
   pad: (item, amount) ->
     out = ""
