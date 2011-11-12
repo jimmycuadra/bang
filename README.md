@@ -28,6 +28,8 @@ Or, if you have not yet stored any data, simply run `bang`.
     $ bang jimmy
     http://jimmycuadra.com/
 
+The value is copied to your clipboard.
+
 ## Delete a snippet
 
     $ bang -d jimmy
