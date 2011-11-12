@@ -11,7 +11,7 @@ module.exports = class Bang
   start: (args) ->
     program = new Command
 
-    program.version("0.0.1")
+    program.version("0.1.0")
             .usage("[options] [key] [value]")
             .option("-d, --delete", "delete the specified key")
             .parse(args)
