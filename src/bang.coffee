@@ -71,7 +71,7 @@ module.exports = class Bang
 
   copy: (value) ->
     copyCommand = if os.type().match /darwin/i then "pbcopy" else "xclip -selection clipboard"
-    exec "printf #{value} | #{copyCommand}", (error, stdout, stderr) ->
+    exec "printf '#{value.replace(/\'/g, "\\'")}' | #{copyCommand}", (error, stdout, stderr) ->
       throw error if error
 
   pad: (item, amount) ->
