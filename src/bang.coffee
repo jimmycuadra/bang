@@ -17,13 +17,16 @@ module.exports = class Bang
     program = new Command
 
     program.version("0.1.0")
-            .usage("[options] [key] [value]")
-            .option("-d, --delete", "delete the specified key")
-            .parse(args)
+      .usage("[options] [key] [value]")
+      .option("-d, --delete", "delete the specified key")
+      .option("-h, --help", "get help")
+      .parse(args)
 
     [key, value] = program.args
 
-    if key and program.delete
+    if program.help
+      @log program.helpInformation()
+    else if key and program.delete
       @delete key
     else if key and value
       @set key, value
