@@ -1,0 +1,78 @@
+<!DOCTYPE html>  <html> <head>   <title>bang.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docs/docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               bang.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">{</span><span class="nx">Command</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s2">&quot;commander&quot;</span>
+<span class="nv">fs      = </span><span class="nx">require</span> <span class="s2">&quot;fs&quot;</span>
+<span class="nv">path    = </span><span class="nx">require</span> <span class="s2">&quot;path&quot;</span>
+<span class="p">{</span><span class="nx">exec</span><span class="p">}</span>  <span class="o">=</span> <span class="nx">require</span> <span class="s2">&quot;child_process&quot;</span>
+<span class="nv">os      = </span><span class="nx">require</span> <span class="s2">&quot;os&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p><strong>Bang</strong> is a program for storing and retrieving text snippets
+on the command line.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">module.exports = </span><span class="k">class</span> <span class="nx">Bang</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Initializes Bang's data store.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">constructor: </span><span class="o">-&gt;</span>
+    <span class="vi">@data = </span><span class="nx">@getData</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Entry point for the CLI. Processes arguments and delegates
+to the appropriate methods.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">start: </span><span class="nf">(args) -&gt;</span>
+    <span class="nv">program = </span><span class="k">new</span> <span class="nx">Command</span>
+
+    <span class="nx">program</span><span class="p">.</span><span class="nx">version</span><span class="p">(</span><span class="s2">&quot;0.1.0&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">usage</span><span class="p">(</span><span class="s2">&quot;[options] [key] [value]&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s2">&quot;-d, --delete&quot;</span><span class="p">,</span> <span class="s2">&quot;delete the specified key&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s2">&quot;-h, --help&quot;</span><span class="p">,</span> <span class="s2">&quot;get help&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span>
+
+    <span class="p">[</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">]</span> <span class="o">=</span> <span class="nx">program</span><span class="p">.</span><span class="nx">args</span>
+
+    <span class="k">if</span> <span class="nx">program</span><span class="p">.</span><span class="nx">help</span>
+      <span class="nx">@log</span> <span class="nx">program</span><span class="p">.</span><span class="nx">helpInformation</span><span class="p">()</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">key</span> <span class="o">and</span> <span class="nx">program</span><span class="p">.</span><span class="k">delete</span>
+      <span class="nx">@delete</span> <span class="nx">key</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">key</span> <span class="o">and</span> <span class="nx">value</span>
+      <span class="nx">@set</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">key</span>
+      <span class="nx">@get</span> <span class="nx">key</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">@data</span><span class="p">).</span><span class="nx">length</span> <span class="o">is</span> <span class="mi">0</span>
+      <span class="nx">@log</span> <span class="nx">program</span><span class="p">.</span><span class="nx">helpInformation</span><span class="p">()</span>
+    <span class="k">else</span>
+      <span class="nx">@list</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Data is persisted to disk at <code>~/.bang</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">dataPath: </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span> <span class="o">+</span> <span class="s2">&quot;/.bang&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Loads an existing data store or creates a new one.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">getData: </span><span class="o">-&gt;</span>
+    <span class="k">return</span> <span class="nx">@data</span> <span class="k">if</span> <span class="nx">@data</span>
+
+    <span class="k">if</span> <span class="nx">path</span><span class="p">.</span><span class="nx">existsSync</span> <span class="nx">@dataPath</span>
+      <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span> <span class="nx">@dataPath</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="p">{}</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Wraps <code>console.log</code> for testing purposes.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">log: </span><span class="nf">(args...) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">args</span><span class="p">...</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Writes the data store to disk as JSON.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">save: </span><span class="o">-&gt;</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span> <span class="nx">@dataPath</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">@data</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Retrieves a key's value.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">get: </span><span class="nf">(key) -&gt;</span>
+    <span class="nv">value = </span><span class="nx">@data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="nx">unless</span> <span class="nx">value</span>
+
+    <span class="nx">@copy</span> <span class="nx">value</span>
+    <span class="nx">@log</span> <span class="nx">value</span>
+
+    <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Sets the value of a key.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">set: </span><span class="nf">(key, value) -&gt;</span>
+    <span class="nx">@data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
+    <span class="nx">@save</span><span class="p">()</span>
+
+    <span class="k">this</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Deletes a key.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">delete</span><span class="o">:</span> <span class="nf">(key) -&gt;</span>
+    <span class="k">delete</span> <span class="nx">@data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+    <span class="nx">@save</span><span class="p">()</span>
+
+    <span class="k">this</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Lists all keys and their values.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">list: </span><span class="o">-&gt;</span>
+    <span class="nv">amount = </span><span class="mi">0</span>
+
+    <span class="k">for</span> <span class="nx">key</span> <span class="k">of</span> <span class="nx">@data</span>
+      <span class="nv">amount = </span><span class="nx">key</span><span class="p">.</span><span class="nx">length</span> <span class="k">if</span> <span class="nx">key</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="nx">amount</span>
+
+    <span class="k">for</span> <span class="nx">key</span> <span class="k">of</span> <span class="nx">@data</span>
+      <span class="nx">@log</span> <span class="s2">&quot;#{@pad(key, amount)}#{key}: #{@data[key]}&quot;</span>
+
+    <span class="k">this</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Copies a value to the clipboard on Mac OS X and Linux.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">copy: </span><span class="nf">(value) -&gt;</span>
+    <span class="nv">copyCommand = </span><span class="k">if</span> <span class="nx">os</span><span class="p">.</span><span class="nx">type</span><span class="p">().</span><span class="nx">match</span> <span class="sr">/darwin/i</span> <span class="k">then</span> <span class="s2">&quot;pbcopy&quot;</span> <span class="k">else</span> <span class="s2">&quot;xclip -selection clipboard&quot;</span>
+    <span class="nx">exec</span> <span class="s2">&quot;printf &#39;#{value.replace(/\&#39;/g, &quot;</span><span class="err">\\</span><span class="s1">&#39;&quot;)}&#39;</span> <span class="o">|</span> <span class="c1">#{copyCommand}&quot;, (error, stdout, stderr) -&gt;</span>
+      <span class="k">throw</span> <span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span>
+
+    <span class="k">this</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>Pads a string by the given amount to line up items nicely.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">pad: </span><span class="nf">(item, amount) -&gt;</span>
+    <span class="nv">out = </span><span class="s2">&quot;&quot;</span>
+    <span class="nv">i = </span><span class="nx">amount</span> <span class="o">-</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span>
+
+    <span class="k">while</span> <span class="nx">i</span> <span class="o">&gt;</span> <span class="mi">0</span>
+      <span class="nx">out</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span>
+      <span class="nx">i</span><span class="o">--</span>
+
+    <span class="nx">out</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html>
