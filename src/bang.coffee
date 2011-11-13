@@ -4,8 +4,8 @@ path    = require "path"
 {exec}  = require "child_process"
 os      = require "os"
 
-# **Bang** is a program for storing and retrieving text snippets
-# on the command line.
+# [Bang](https://github.com/jimmycuadra/bang) is a program
+# for storing and retrieving text snippets on the command line.
 module.exports = class Bang
   # Initializes Bang's data store.
   constructor: ->
@@ -16,7 +16,7 @@ module.exports = class Bang
   start: (args) ->
     program = new Command
 
-    program.version("0.1.0")
+    program.version("0.1.1")
       .usage("[options] [key] [value]")
       .option("-d, --delete", "delete the specified key")
       .option("-h, --help", "get help")
