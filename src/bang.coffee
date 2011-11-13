@@ -2,7 +2,6 @@
 fs      = require "fs"
 path    = require "path"
 {exec}  = require "child_process"
-os      = require "os"
 
 # [Bang](https://github.com/jimmycuadra/bang) is a program
 # for storing and retrieving text snippets on the command line.
@@ -16,7 +15,7 @@ module.exports = class Bang
   start: (args) ->
     program = new Command
 
-    program.version("0.1.1")
+    program.version("0.1.2")
       .usage("[options] [key] [value]")
       .option("-d, --delete", "delete the specified key")
       .option("-h, --help", "get help")
@@ -94,11 +93,17 @@ module.exports = class Bang
 
     this
 
-  # Copies a value to the clipboard on Mac OS X and Linux.
+  # Copies a value to the clipboard.
   copy: (value) ->
-    copyCommand = if os.type().match /darwin/i then "pbcopy" else "xclip -selection clipboard"
-    exec "printf '#{value.replace(/\'/g, "\\'")}' | #{copyCommand}", (error, stdout, stderr) ->
-      throw error if error
+    copyCommand = switch process.platform
+      when "darwin" then "pbcopy"
+      when "win32"  then "clip"
+      else "xclip -selection clipboard"
+
+    if process.platform is "win32"
+      exec "echo #{value.replace(/\'/g, "\\'")} | #{copyCommand}"
+    else
+      exec "printf '#{value.replace(/\'/g, "\\'")}' | #{copyCommand}"
 
     this
 
