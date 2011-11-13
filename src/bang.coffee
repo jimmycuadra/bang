@@ -1,6 +1,5 @@
 fs      = require "fs"
 path    = require "path"
-{exec}  = require "child_process"
 
 # [Bang](https://github.com/jimmycuadra/bang) is a program
 # for storing and retrieving text snippets on the command line.

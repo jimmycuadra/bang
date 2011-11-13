@@ -1,5 +1,6 @@
 {Command} = require "commander"
 Bang      = require "./bang"
+{exec}  = require "child_process"
 
 # Command line interface to Bang.
 module.exports = class CLI

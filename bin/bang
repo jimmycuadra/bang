@@ -2,8 +2,7 @@
 
 var path    = require('path'),
     fs      = require('fs'),
-    args    = process.argv.slice(2, process.argv.length),
     CLI     = require(path.join(path.dirname(fs.realpathSync(__filename)), '../lib/cli')),
-    program = new CLI(args);
+    program = new CLI(process.argv);
 
 program.start();
