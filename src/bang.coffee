@@ -44,7 +44,7 @@ module.exports = class Bang
       amount = key.length if key.length > amount
 
     for key of @data
-      lines.push "#{pad(key, amount)}#{key}: #{@data[key]}"
+      lines.push "#{pad(key, amount)}#{key}: #{@get key}"
 
     lines.join "\n"
 

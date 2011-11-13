@@ -5,8 +5,8 @@ Bang      = require "./bang"
 module.exports = class CLI
   # Initializes a Bang instance and a Commander instance
   # to process arguments passed from the shell.
-  constructor: (args) ->
-    @bang     = new Bang
+  constructor: (args, mockBang) ->
+    @bang     = mockBang or new Bang
     @program  = new Command
 
     @program.version("0.1.2")
