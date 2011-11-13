@@ -4,7 +4,7 @@ path    = require "path"
 {exec}  = require "child_process"
 os      = require "os"
 
-# Bang is program for storing and retrieving text snippets
+# Bang is a program for storing and retrieving text snippets
 # on the command line.
 module.exports = class Bang
   # Initializes Bang's data store.
