@@ -51,14 +51,17 @@ module.exports = class Bang
     return unless value
     @copy value
     @log value
+    value
 
   set: (key, value) ->
     @data[key] = value
     @save()
+    this
 
   delete: (key) ->
     delete @data[key]
     @save()
+    this
 
   list: ->
     amount = 0
@@ -69,10 +72,14 @@ module.exports = class Bang
     for key of @data
       @log "#{@pad(key, amount)}#{key}: #{@data[key]}"
 
+    this
+
   copy: (value) ->
     copyCommand = if os.type().match /darwin/i then "pbcopy" else "xclip -selection clipboard"
     exec "printf '#{value.replace(/\'/g, "\\'")}' | #{copyCommand}", (error, stdout, stderr) ->
       throw error if error
+
+    this
 
   pad: (item, amount) ->
     out = ""
