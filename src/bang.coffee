@@ -4,7 +4,7 @@ path    = require "path"
 {exec}  = require "child_process"
 os      = require "os"
 
-# Bang is a program for storing and retrieving text snippets
+# **Bang** is a program for storing and retrieving text snippets
 # on the command line.
 module.exports = class Bang
   # Initializes Bang's data store.
@@ -32,13 +32,12 @@ module.exports = class Bang
       @set key, value
     else if key
       @get key
+    else if Object.keys(@data).length is 0
+      @log program.helpInformation()
     else
-      if Object.keys(@data).length is 0
-        @log program.helpInformation()
-      else
-        @list()
+      @list()
 
-  # Data is persisted to disk at ~/.bang.
+  # Data is persisted to disk at `~/.bang`.
   dataPath: process.env.HOME + "/.bang"
 
   # Loads an existing data store or creates a new one.
@@ -50,7 +49,7 @@ module.exports = class Bang
     else
       {}
 
-  # Wraps console.log for testing purposes.
+  # Wraps `console.log` for testing purposes.
   log: (args...) ->
     console.log args...
 
@@ -58,27 +57,32 @@ module.exports = class Bang
   save: ->
     fs.writeFileSync @dataPath, JSON.stringify(@data)
 
-  # Retrieve a key's value.
+  # Retrieves a key's value.
   get: (key) ->
     value = @data[key]
+
     return unless value
+
     @copy value
     @log value
+
     value
 
-  # Set the value of a key.
+  # Sets the value of a key.
   set: (key, value) ->
     @data[key] = value
     @save()
+
     this
 
-  # Delete a key.
+  # Deletes a key.
   delete: (key) ->
     delete @data[key]
     @save()
+
     this
 
-  # List all keys and their values.
+  # Lists all keys and their values.
   list: ->
     amount = 0
 
@@ -90,7 +94,7 @@ module.exports = class Bang
 
     this
 
-  # Copy a value to the clipboard on Mac OS X and Linux.
+  # Copies a value to the clipboard on Mac OS X and Linux.
   copy: (value) ->
     copyCommand = if os.type().match /darwin/i then "pbcopy" else "xclip -selection clipboard"
     exec "printf '#{value.replace(/\'/g, "\\'")}' | #{copyCommand}", (error, stdout, stderr) ->
@@ -98,7 +102,7 @@ module.exports = class Bang
 
     this
 
-  # Pad a string by the given amount to line up items nicely.
+  # Pads a string by the given amount to line up items nicely.
   pad: (item, amount) ->
     out = ""
     i = amount - item.length
