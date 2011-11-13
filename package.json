@@ -8,6 +8,7 @@
     "type": "git",
     "url": "git://github.com/jimmycuadra/bang.git"
   },
+  "main": "./lib/bang",
   "bin": {
     "bang": "./bin/bang"
   },
