@@ -2,7 +2,7 @@ fs      = require "fs"
 path    = require "path"
 
 # [Bang](https://github.com/jimmycuadra/bang) is a program
-# for storing and retrieving text snippets on the command line.
+# for storing and retrieving text snippets.
 module.exports = class Bang
   constructor: ->
     @loadData()

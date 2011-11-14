@@ -45,6 +45,10 @@ The value is copied to your clipboard.
 
 Bang's data is serialized to JSON and peristed to a file at `~/.bang`. If you want to share your Bang data across multiple machines, you can move the file to [Dropbox](https://www.dropbox.com/) or some other type of network disk, and then symlink it to `~/.bang` on your local machine.
 
+## Using Bang programmatically
+
+Bang can also be used from a Node program directly. Simply `require("bang")` to import the core Bang class with access to all the CRUD methods.
+
 ## Tests
 
 Bang includes a comprehensive test suite using [Jasmine](http://pivotal.github.com/jasmine/). To run it:

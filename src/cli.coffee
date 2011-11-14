@@ -2,15 +2,17 @@
 Bang      = require "./bang"
 {exec}  = require "child_process"
 
-# Command line interface to Bang.
+# Command line interface to [Bang](https://github.com/jimmycuadra/bang).
 module.exports = class CLI
-  # Initializes a Bang instance and a Commander instance
-  # to process arguments passed from the shell.
+  # Initializes a Bang instance and a Commander instance to process
+  # arguments passed from the shell. The optional second argument
+  # is an instance of Bang with methods stubbed out for testing
+  # purposes.
   constructor: (args, mockBang) ->
     @bang     = mockBang or new Bang
     @program  = new Command
 
-    @program.version("0.1.2")
+    @program.version("0.2.0")
       .usage("[options] [key] [value]")
       .option("-d, --delete", "delete the specified key")
       .option("-h, --help", "get help")
