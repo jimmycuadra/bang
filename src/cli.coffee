@@ -12,7 +12,7 @@ module.exports = class CLI
     @bang     = mockBang or new Bang
     @program  = new Command
 
-    @program.version("0.2.0")
+    @program.version("0.2.1")
       .usage("[options] [key] [value]")
       .option("-d, --delete", "delete the specified key")
       .option("-h, --help", "get help")
