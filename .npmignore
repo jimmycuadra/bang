@@ -1,0 +1,9 @@
+docs
+node_modules
+spec
+src
+.gitignore
+.npmignore
+Cakefile
+index.html
+README.md
