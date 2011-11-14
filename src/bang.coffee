@@ -7,12 +7,13 @@ module.exports = class Bang
   constructor: ->
     @loadData()
 
+  # The file where data is persisted to disk.
+  dataPath: process.env.HOME + "/.bang"
+
   # Initializes Bang's data store.
   loadData: ->
-    dataPath = process.env.HOME + "/.bang"
-
-    @data = if path.existsSync dataPath
-      JSON.parse fs.readFileSync dataPath
+    @data = if path.existsSync @dataPath
+      JSON.parse fs.readFileSync @dataPath
     else
       {}
 
