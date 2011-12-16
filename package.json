@@ -2,7 +2,7 @@
   "author": "Jimmy Cuadra <jimmy@jimmycuadra.com> (http://jimmycuadra.com/)",
   "name": "bang",
   "description": "Text snippets on the command line.",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "homepage": "https://github.com/jimmycuadra/bang",
   "repository": {
     "type": "git",
