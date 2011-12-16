@@ -1,5 +1,5 @@
-CLI = require "cli"
-Bang = require "bang"
+CLI = require "../lib/cli"
+Bang = require "../lib/bang"
 
 cliArgs = (args) ->
   ["node", "bang"].concat args

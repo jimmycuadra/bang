@@ -4,7 +4,7 @@ watch   = require "nodewatch"
 task "spec", "Runs the Jasmine specs.", ->
   header()
 
-  jasmine = spawn "node", ["node_modules/jasmine-node/lib/jasmine-node/cli.js", "--coffee", "-i", "src", "spec"]
+  jasmine = spawn "node", ["node_modules/jasmine-node/lib/jasmine-node/cli.js", "--coffee", "spec"]
 
   jasmine.stdout.on "data", (data) ->
     process.stdout.write data

@@ -1,4 +1,4 @@
-Bang = require "bang"
+Bang = require "../lib/bang"
 
 describe "Bang", ->
   beforeEach ->
