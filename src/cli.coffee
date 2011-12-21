@@ -1,3 +1,9 @@
+# Fix requiring of package.json for Node v0.4
+if process.versions.node < "0.6"
+  require.extensions[".json"] = (module, filename) ->
+    content = require("fs").readFileSync(filename, "utf8")
+    module.exports = JSON.parse(content)
+
 {Command} = require "commander"
 Bang      = require "./bang"
 {exec}  = require "child_process"
