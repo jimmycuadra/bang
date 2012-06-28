@@ -2,7 +2,7 @@
   "author": "Jimmy Cuadra <jimmy@jimmycuadra.com> (http://jimmycuadra.com/)",
   "name": "bang",
   "description": "Text snippets on the command line.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/jimmycuadra/bang",
   "repository": {
     "type": "git",
@@ -15,14 +15,11 @@
   "scripts": {
     "test": "cake spec"
   },
-  "engines": {
-    "node": ">= 0.4"
-  },
   "dependencies": {
-    "commander": "~0.3.2"
+    "commander": "~0.6.1"
   },
   "devDependencies": {
-    "jasmine-node": "~1.0.12",
-    "nodewatch": "~0.0.4"
+    "jasmine-node": "~1.0.26",
+    "nodewatch": "~0.1.0"
   }
 }
