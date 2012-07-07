@@ -1,5 +1,4 @@
-fs      = require "fs"
-path    = require "path"
+fs = require "fs"
 
 # [Bang](https://github.com/jimmycuadra/bang) is a program
 # for storing and retrieving text snippets.
@@ -12,7 +11,7 @@ module.exports = class Bang
 
   # Initializes Bang's data store.
   loadData: ->
-    @data = if path.existsSync @dataPath
+    @data = if fs.existsSync @dataPath
       JSON.parse fs.readFileSync @dataPath
     else
       {}

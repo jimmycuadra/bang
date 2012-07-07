@@ -7,7 +7,7 @@ if process.versions.node < "0.6"
 {Command} = require "commander"
 Bang      = require "./bang"
 {exec}  = require "child_process"
-package = require "../package.json"
+packageInfo = require "../package.json"
 
 # Command line interface to [Bang](https://github.com/jimmycuadra/bang).
 module.exports = class CLI
@@ -19,7 +19,7 @@ module.exports = class CLI
     @bang     = mockBang or new Bang
     @program  = new Command
 
-    @program.version(package.version, "-v, --version")
+    @program.version(packageInfo.version, "-v, --version")
       .usage("[options] [key] [value]")
       .option("-d, --delete", "delete the specified key")
       .option("-h, --help", "get help")
