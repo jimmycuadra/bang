@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/jimmycuadra/bang.png)](http://travis-ci.org/jimmycuadra/bang)
 # Bang
 
 **Bang** is a command line tool for quick storage and retriveal of text snippets. It is inspired by and very similar to [holman](https://github.com/holman)'s [Boom](https://github.com/holman/boom). The main difference is that Bang has no concept of lists: it is only one level deep. It also has a simpler interface to avoid accidentally creating stuff.
