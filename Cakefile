@@ -24,6 +24,10 @@ task "watch", "Watches for file changes, recompiling CoffeeScript and running th
 
     invoke "spec"
 
+task "docs", "Regenerate the Docco annotated source.", ->
+  exec "docco -l classic -o docs src/*", (error, stdout, stderr) ->
+    throw error if error
+
 header = ->
   divider = "------------"
   console.log divider, dateString(), divider

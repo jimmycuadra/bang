@@ -1,9 +1,3 @@
-# Fix requiring of package.json for Node v0.4
-if process.versions.node < "0.6"
-  require.extensions[".json"] = (module, filename) ->
-    content = require("fs").readFileSync(filename, "utf8")
-    module.exports = JSON.parse(content)
-
 {Command} = require "commander"
 Bang      = require "./bang"
 {exec}  = require "child_process"
@@ -22,7 +16,6 @@ module.exports = class CLI
     @program.version(packageInfo.version, "-v, --version")
       .usage("[options] [key] [value]")
       .option("-d, --delete", "delete the specified key")
-      .option("-h, --help", "get help")
       .parse(args)
 
   # Delegates to Bang methods determined by
@@ -30,9 +23,7 @@ module.exports = class CLI
   start: ->
     [key, value] = @program.args
 
-    if @program.help
-      @log @program.helpInformation()
-    else if key and @program.delete
+    if key and @program.delete
       @bang.delete key
     else if key and value
       @bang.set key, value
