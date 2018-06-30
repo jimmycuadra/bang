@@ -52,7 +52,7 @@ Bang can also be used from a Node program directly. Simply `require("bang")` to 
 
 ## Tests
 
-Bang includes a comprehensive test suite using [Jasmine](http://pivotal.github.com/jasmine/). To run it:
+Bang includes a comprehensive test suite using [Jasmine](https://jasmine.github.io/). To run it:
 
     $ npm install -g coffee-script
     $ git clone http://github.com/jimmycuadra/bang.git
